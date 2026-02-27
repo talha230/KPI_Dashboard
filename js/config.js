@@ -17,8 +17,10 @@ const CONFIG = {
         'target-red': '#ff6b6b'
     },
     
-    // KPIs that have factor buttons
-    factorKPIs: ['OTD', 'OEE', 'YMR'],
+    // KPIs that have factor buttons (now loaded from registry)
+    get factorKPIs() {
+        return getAllFactors ? getAllFactors() : [];
+    },
     
     // Default direction if not specified
     defaultDirection: 'HIGHER_IS_BETTER',
@@ -33,9 +35,9 @@ const CONFIG = {
     dataFiles: {
         main: 'data/main-data.txt',
         factors: {
-            OTD: 'data/otd-factors.txt',
-            OEE: 'data/oee-factors.txt',
-            YMR: 'data/ymr-factors.txt'
+            OTD: 'data/otd.txt',
+            OEE: 'data/oee.txt',
+            YMR: 'data/ymr.txt'
         }
     }
 };

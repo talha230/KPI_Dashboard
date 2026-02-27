@@ -173,7 +173,13 @@
         </div>
     </div>
 
-    <!-- JavaScript Files (load in correct order) -->
+    <!-- Load factor configurations FIRST -->
+    <script src="config/factors/factor-registry.js"></script>
+    <script src="config/factors/otd-config.js"></script>
+    <script src="config/factors/oee-config.js"></script>
+    <script src="config/factors/ymr-config.js"></script>
+    
+    <!-- Then load core JavaScript files -->
     <script src="js/config.js"></script>
     <script src="js/data-manager.js"></script>
     <script src="js/chart-renderer.js"></script>

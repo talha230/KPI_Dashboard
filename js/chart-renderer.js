@@ -7,11 +7,24 @@ const ChartRenderer = {
     
     // Update all charts and table
     updateAll: function() {
+        console.log('ChartRenderer.updateAll called');
+        
         const plantFilter = document.getElementById('plantFilter').value;
         const kpis = [...new Set([...DataManager.monthlyData.map(d => d.KPI), 
                                   ...DataManager.ytdData.map(d => d.KPI)])].sort();
+        
+        console.log('KPIs found:', kpis);
+        
+        if (kpis.length === 0) {
+            console.log('No KPIs to display');
+            return;
+        }
+        
         const latestMonth = this.getLatestMonth();
+        console.log('Latest month:', latestMonth);
+        
         const latestMonthly = DataManager.monthlyData.filter(d => d.Month === latestMonth);
+        console.log('Latest monthly data:', latestMonthly.length, 'rows');
         
         this.renderGrid(kpis, latestMonthly, plantFilter);
         this.renderTable(kpis, latestMonthly);
@@ -19,7 +32,14 @@ const ChartRenderer = {
     
     // Render KPI grid
     renderGrid: function(kpis, latestMonthly, plantFilter) {
+        console.log('Rendering grid with', kpis.length, 'KPIs');
+        
         const grid = document.getElementById('kpiGrid');
+        if (!grid) {
+            console.error('kpiGrid element not found');
+            return;
+        }
+        
         grid.innerHTML = '';
         
         kpis.forEach(kpi => {
@@ -41,15 +61,15 @@ const ChartRenderer = {
         const direction = plant05?.Direction || plant06?.Direction || CONFIG.defaultDirection;
         const card = document.createElement('div');
         card.className = 'kpi-card';
-        card.id = `card-${kpi}`;
         
         const chartId = 'chart_' + kpi.replace(/[^a-zA-Z0-9]/g, '_');
         
         // Add YTD boxes
         const ytdHtml = this.createYTDBoxes(kpi, direction);
         
-        // Add factor button if applicable
-        const factorButton = CONFIG.factorKPIs.includes(kpi) ? 
+        // Add factor button if this KPI has factor config
+        const hasFactor = window.getFactorConfig && getFactorConfig(kpi) ? true : false;
+        const factorButton = hasFactor ? 
             `<button class="factor-btn" onclick="Factors.openModal('${kpi}')">🔍 VIEW ${kpi} FACTORS</button>` : '';
         
         card.innerHTML = `
@@ -60,7 +80,7 @@ const ChartRenderer = {
                 </span>
             </div>
             <div class="kpi-content">
-                <div id="${chartId}" class="chart-container"></div>
+                <div id="${chartId}" class="chart-container" style="height:200px;"></div>
                 ${ytdHtml}
                 ${factorButton}
             </div>
@@ -102,10 +122,20 @@ const ChartRenderer = {
     
     // Create individual chart
     createChart: function(kpi, plantFilter) {
+        console.log('Creating chart for', kpi);
+        
         const allMonthly = DataManager.monthlyData.filter(d => d.KPI === kpi);
+        if (allMonthly.length === 0) {
+            console.log('No monthly data for', kpi);
+            return;
+        }
+        
         const direction = allMonthly[0]?.Direction || CONFIG.defaultDirection;
         const months = this.sortMonths([...new Set(allMonthly.map(d => d.Month))]);
         const chartId = 'chart_' + kpi.replace(/[^a-zA-Z0-9]/g, '_');
+        
+        console.log('Chart ID:', chartId);
+        console.log('Months:', months);
         
         const traces = [];
         let maxValue = 0;
@@ -124,16 +154,14 @@ const ChartRenderer = {
                     mode: this.showValues ? 'lines+markers+text' : 'lines+markers',
                     text: this.showValues ? plantData.map(d => this.formatValue(d.Achieved, d.IsPercent)) : [],
                     textposition: 'top center',
-                    textfont: { size: 11, color: CONFIG.colors['Plant-05'] },
-                    line: { color: CONFIG.colors['Plant-05'], width: 3 },
+                    textfont: { size: 10, color: CONFIG.colors['Plant-05'] },
+                    line: { color: CONFIG.colors['Plant-05'], width: 2 },
                     marker: { 
-                        size: 10,
+                        size: 8,
                         color: plantData.map(d => this.isGood(d.Achieved, d.Target, direction) ? '#4caf50' : '#f44336'),
                         line: { color: '#fff', width: 1 }
                     },
-                    name: 'Plant-05',
-                    hoverinfo: 'x+y',
-                    hovertemplate: '<b>%{x}</b><br>Plant-05: %{y:.2f}<extra></extra>'
+                    name: 'Plant-05'
                 });
             }
         }
@@ -152,48 +180,58 @@ const ChartRenderer = {
                     mode: this.showValues ? 'lines+markers+text' : 'lines+markers',
                     text: this.showValues ? plantData.map(d => this.formatValue(d.Achieved, d.IsPercent)) : [],
                     textposition: 'bottom center',
-                    textfont: { size: 11, color: CONFIG.colors['Plant-06'] },
-                    line: { color: CONFIG.colors['Plant-06'], width: 3 },
+                    textfont: { size: 10, color: CONFIG.colors['Plant-06'] },
+                    line: { color: CONFIG.colors['Plant-06'], width: 2 },
                     marker: { 
-                        size: 10,
+                        size: 8,
                         color: plantData.map(d => this.isGood(d.Achieved, d.Target, direction) ? '#4caf50' : '#f44336'),
                         line: { color: '#fff', width: 1 }
                     },
-                    name: 'Plant-06',
-                    hoverinfo: 'x+y',
-                    hovertemplate: '<b>%{x}</b><br>Plant-06: %{y:.2f}<extra></extra>'
+                    name: 'Plant-06'
                 });
             }
         }
         
         if(traces.length > 0) {
-            Plotly.newPlot(chartId, traces, {
-                margin: { l: 50, r: 20, t: 20, b: 50 },
+            const layout = {
+                margin: { l: 40, r: 10, t: 10, b: 40 },
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 plot_bgcolor: 'rgba(0,0,0,0.2)',
-                font: { color: '#fff', size: 11 },
+                font: { color: '#fff', size: 10 },
                 xaxis: { 
                     tickangle: -45,
                     gridcolor: 'rgba(255,255,255,0.1)',
-                    tickfont: { color: '#aaa', size: 10 },
+                    tickfont: { color: '#aaa', size: 9 },
                     categoryorder: 'array',
                     categoryarray: months
                 },
                 yaxis: { 
                     gridcolor: 'rgba(255,255,255,0.1)',
-                    tickfont: { color: '#aaa', size: 10 },
+                    tickfont: { color: '#aaa', size: 9 },
                     range: [0, maxValue * CONFIG.yAxisPadding]
                 },
                 showlegend: traces.length > 1,
-                legend: { orientation: 'h', y: -0.4, font: { color: '#fff', size: 10 } },
+                legend: { orientation: 'h', y: -0.3, font: { color: '#fff', size: 9 } },
                 hovermode: 'x'
-            });
+            };
+            
+            Plotly.newPlot(chartId, traces, layout);
+            console.log('Chart plotted for', kpi);
+        } else {
+            console.log('No traces for', kpi);
         }
     },
     
     // Render table
     renderTable: function(kpis, latestMonthly) {
+        console.log('Rendering table with', kpis.length, 'KPIs');
+        
         const tbody = document.getElementById('tableBody');
+        if (!tbody) {
+            console.error('tableBody element not found');
+            return;
+        }
+        
         tbody.innerHTML = '';
         
         kpis.forEach(kpi => {
@@ -225,18 +263,23 @@ const ChartRenderer = {
     },
     
     formatValue: function(val, isPercent) {
+        if (val === undefined || val === null) return '-';
+        
+        if (isPercent) {
+            return (val * 100).toFixed(1) + '%';
+        }
         if (Number.isInteger(val)) {
-            return isPercent ? (val * 100).toFixed(0) + '%' : val.toFixed(0);
+            return val.toFixed(0);
         }
         if (Math.abs(val * 10 - Math.round(val * 10)) < 0.0001) {
-            return isPercent ? (val * 100).toFixed(1) + '%' : val.toFixed(1);
+            return val.toFixed(1);
         }
-        return isPercent ? (val * 100).toFixed(2) + '%' : val.toFixed(2);
+        return val.toFixed(2);
     },
     
     getStatusBadge: function(achieved, target, direction) {
         const good = this.isGood(achieved, target, direction);
-        return `<span class="${good ? 'green-bg' : 'red-bg'}">
+        return `<span class="${good ? 'green-bg' : 'red-bg'}" style="padding:4px 8px; border-radius:12px; display:inline-block;">
                     ${good ? '✓ ON TARGET' : '✗ BELOW'}
                 </span>`;
     },
