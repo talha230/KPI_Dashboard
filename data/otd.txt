@@ -1,47 +1,100 @@
-			HD5	HD5	HD6	HD6
-Month	STATUS	RESPONSIBILITY	# of Orders	%	# of Orders	%
-Jul-25	Delayed	Customer	32	9%	3	5%
-Jul-25	Delayed	Other (Customer)	7	2%		0%
-Jul-25	Delayed	Operations	8	2%		0%
-Jul-25	Delayed	P & S (Yarns)	5	1%		0%
-Jul-25	Delayed	PD	2	1%		0%
-Jul-25	Delayed	AR/ OSP	5	1%		0%
-Jul-25	Delayed	IS	6	2%		0%
-Jul-25	Delayed		1	0%		0%
-Jul-25	On Time		275	81%	58	95%
-Aug-25	Delayed	Customer	20	8%		0%
-Aug-25	Delayed	Other (Customer)	1	0%		0%
-Aug-25	Delayed	P & S (Yarns)	3	1%		0%
-Aug-25	On Time		217	90%	61	100%
-Sep-25	Delayed	Customer	29	9%		0%
-Sep-25	Delayed		3	1%		0%
-Sep-25	On Time		309	91%	49	100%
-Oct-25	Delayed	Customer	11	4%		0%
-Oct-25	Delayed	Operations	6	2%		0%
-Oct-25	Delayed	PD	1	0%	1	3%
-Oct-25	Delayed	IS	1	0%		0%
-Oct-25	Delayed	Other (Internal)	1	0%		0%
-Oct-25	Delayed		4	1%		0%
-Oct-25	On Time		269	92%	29	97%
-Nov-25	Delayed	Customer	8	3%	1	1%
-Nov-25	Delayed	Operations	1	0%	1	1%
-Nov-25	Delayed	P & S (Yarns)	1	0%		0%
-Nov-25	Delayed	Supply Planning	1	0%		0%
-Nov-25	Delayed		1	0%		0%
-Nov-25	On Time		248	95%	144	99%
-Dec-25	Delayed	Customer	1	0%	30	18%
-Dec-25	Delayed	Operations	5	1%	6	4%
-Dec-25	Delayed	P & S (Yarns)	8	2%	2	1%
-Dec-25	Delayed	Logistics (I&E)	2	1%		0%
-Dec-25	On Time		361	96%	127	77%
-Jan-26	Delayed	Customer	25	8%	22	13%
-Jan-26	Delayed	Operations	2	1%	3	2%
-Jan-26	Delayed	P & S (Yarns)	8	3%	2	1%
-Jan-26	Delayed	Logistics (I&E)	3	1%		0%
-Jan-26	On Time		280	88%	139	84%
-Feb-26	Delayed	Customer	1	0%	20	15%
-Feb-26	Delayed	Operations	1	0%	5	4%
-Feb-26	Delayed	P & S (Yarns)	2	1%	2	1%
-Feb-26	Delayed		1	0%		0%
-Feb-26	Delayed	S & M		0%	1	1%
-Feb-26	On Time		204	98%	108	79%
+Month	STATUS	CUST_ID	RESPONSIBILITY	HD5	HD6
+Jul-25	Delayed	75	Operations	1	
+Jul-25	Delayed	75	IS	2	
+Jul-25	Delayed	81	Customer	2	3
+Jul-25	Delayed	81	Operations	2	
+Jul-25	Delayed	81	P & S (Yarns)	1	
+Jul-25	Delayed	81	IS	1	
+Jul-25	Delayed	165	P & S (Yarns)	1	
+Jul-25	Delayed	180	Customer	4	
+Jul-25	Delayed	180	Operations	1	
+Jul-25	Delayed	180	AR/ OSP	2	
+Jul-25	Delayed	180	IS	1	
+Jul-25	Delayed	186	Customer	5	
+Jul-25	Delayed	186	Other (Customer)	2	
+Jul-25	Delayed	186	AR/ OSP	3	
+Jul-25	Delayed	186	IS	1	
+Jul-25	Delayed	186		1	
+Jul-25	Delayed	213	Customer	16	
+Jul-25	Delayed	213	Other (Customer)	4	
+Jul-25	Delayed	213	Operations	3	
+Jul-25	Delayed	213	IS	1	
+Jul-25	Delayed	242	Customer	2	
+Jul-25	Delayed	242	Other (Customer)	1	
+Jul-25	Delayed	242	Operations	1	
+Jul-25	Delayed	242	P & S (Yarns)	3	
+Jul-25	Delayed	242	PD	2	
+Jul-25	Delayed	278	Customer	3	
+Jul-25	On Time			275	58
+Aug-25	Delayed	75	P & S (Yarns)	2	
+Aug-25	Delayed	186	Other (Customer)	1	
+Aug-25	Delayed	213	Customer	19	
+Aug-25	Delayed	242	Customer	1	
+Aug-25	Delayed	242	P & S (Yarns)	1	
+Aug-25	On Time			217	61
+Sep-25	Delayed	180	Customer	1	
+Sep-25	Delayed	213	Customer	21	
+Sep-25	Delayed	242	Customer	7	
+Sep-25	Delayed	242		3	
+Sep-25	On Time			309	49
+Oct-25	Delayed	81	Customer	1	
+Oct-25	Delayed	180	Other (Internal)	1	
+Oct-25	Delayed	200	PD		1
+Oct-25	Delayed	206	IS	1	
+Oct-25	Delayed	213	Customer	10	
+Oct-25	Delayed	213	Operations	1	
+Oct-25	Delayed	213	PD	1	
+Oct-25	Delayed	242	Operations	5	
+Oct-25	Delayed	242		4	
+Oct-25	On Time			269	29
+Nov-25	Delayed	141	Customer	2	1
+Nov-25	Delayed	141	Operations	1	1
+Nov-25	Delayed	180	Customer	2	
+Nov-25	Delayed	180	Supply Planning	1	
+Nov-25	Delayed	180		1	
+Nov-25	Delayed	186	Customer	2	
+Nov-25	Delayed	213	Customer	2	
+Nov-25	Delayed	213	P & S (Yarns)	1	
+Nov-25	On Time			248	144
+Dec-25	Delayed	81	Operations		1
+Dec-25	Delayed	81	P & S (Yarns)	1	2
+Dec-25	Delayed	141	Customer		8
+Dec-25	Delayed	177	Operations	1	
+Dec-25	Delayed	200	Customer		22
+Dec-25	Delayed	200	Operations		5
+Dec-25	Delayed	213	Operations	2	
+Dec-25	Delayed	213	P & S (Yarns)	7	
+Dec-25	Delayed	213	Logistics (I&E)	2	
+Dec-25	Delayed	242	Customer	1	
+Dec-25	Delayed	242	Operations	2	
+Dec-25	On Time			361	127
+Jan-26	Delayed	81	Operations	1	
+Jan-26	Delayed	141	Customer		13
+Jan-26	Delayed	141	Operations		1
+Jan-26	Delayed	141	P & S (Yarns)		2
+Jan-26	Delayed	177	Customer	1	
+Jan-26	Delayed	177	Operations	1	
+Jan-26	Delayed	180	P & S (Yarns)	1	
+Jan-26	Delayed	200	Customer		9
+Jan-26	Delayed	200	Operations		2
+Jan-26	Delayed	213	P & S (Yarns)	4	
+Jan-26	Delayed	213	Logistics (I&E)	3	
+Jan-26	Delayed	242	Customer	23	
+Jan-26	Delayed	242	P & S (Yarns)	3	
+Jan-26	Delayed	278	Customer	1	
+Jan-26	On Time			280	139
+Feb-26	Delayed	81	Operations		1
+Feb-26	Delayed	81	P & S (Yarns)		1
+Feb-26	Delayed	141	Customer		7
+Feb-26	Delayed	141	Operations		2
+Feb-26	Delayed	141	P & S (Yarns)		1
+Feb-26	Delayed	141	S & M		1
+Feb-26	Delayed	177	Customer	1	
+Feb-26	Delayed	177	Operations	1	
+Feb-26	Delayed	200	Customer		13
+Feb-26	Delayed	200	Operations		1
+Feb-26	Delayed	206	P & S (Yarns)	1	
+Feb-26	Delayed	213	Operations		1
+Feb-26	Delayed	213		1	
+Feb-26	Delayed	278	P & S (Yarns)	1	
+Feb-26	On Time			204	108
