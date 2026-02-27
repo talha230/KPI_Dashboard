@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Performance Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        /* Additional inline styles for modal month filter */
+        .factor-month-filter {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.03);
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .factor-month-filter label {
+            color: #aaa;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .factor-month-filter select {
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            min-width: 150px;
+            cursor: pointer;
+        }
+        .factor-month-filter select:hover {
+            border-color: #667eea;
+        }
+        .factor-month-filter select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>KPI Performance Dashboard</h1>
+            <div id="dataBadge" class="data-badge" onclick="UI.showPasteBar()" style="display: none;">
+                ⚡ DATA LOADED • CLICK TO REPLACE
+            </div>
+        </div>
+
+        <!-- Main Data Paste Bar (shown if no data files found) -->
+        <div id="pasteBar" class="paste-bar">
+            <h3>📋 PASTE YOUR MAIN KPI DATA</h3>
+            <textarea id="mainDataInput" placeholder="Paste main KPI data here... (tab-separated)"></textarea>
+            <div>
+                <button onclick="UI.embedMainData()">✨ CREATE DASHBOARD</button>
+                <button class="secondary" onclick="UI.resetDashboard()">🗑️ CLEAR</button>
+            </div>
+            <p style="color: #888; margin-top: 15px; font-size: 12px;">
+                💡 Tip: Place data files in /data folder for automatic loading
+            </p>
+        </div>
+
+        <!-- Factor Data Paste Bar (shown when clicking ADD FACTOR DATA) -->
+        <div id="factorPasteBar" class="paste-bar factor-paste" style="display: none;">
+            <h3>📋 PASTE FACTOR DATA (OTD, OEE, YMR)</h3>
+            <select id="factorKPI">
+                <option value="OTD">📦 OTD Factors</option>
+                <option value="OEE">⚙️ OEE Factors</option>
+                <option value="YMR">🧵 YMR Factors</option>
+            </select>
+            <textarea id="factorDataInput" placeholder="Paste factor data for selected KPI... (tab-separated with Month column)"></textarea>
+            <div>
+                <button onclick="UI.embedFactorData()">📊 LOAD FACTORS</button>
+                <button class="secondary" onclick="UI.hideFactorPaste()">CANCEL</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Content (shown after data loads) -->
+        <div id="dashboardContent" style="display: none;">
+            <!-- Control Bar -->
+            <div class="control-bar">
+                <div>
+                    <label>🌍 PLANT FILTER</label>
+                    <select id="plantFilter">
+                        <option value="ALL">🌐 ALL PLANTS</option>
+                        <option value="Plant-05">🔵 PLANT-05 ONLY</option>
+                        <option value="Plant-06">🟠 PLANT-06 ONLY</option>
+                    </select>
+                </div>
+                
+                <div class="value-toggle">
+                    <button id="showBtn" class="value-btn active" onclick="UI.setValueDisplay(true)">📊 SHOW VALUES</button>
+                    <button id="hideBtn" class="value-btn" onclick="UI.setValueDisplay(false)">🚫 HIDE VALUES</button>
+                </div>
+                
+                <div>
+                    <button id="showFactorBtn" class="secondary" onclick="UI.showFactorPaste()" style="display: none;">📦 ADD FACTOR DATA</button>
+                </div>
+                
+                <span class="reset-link" onclick="UI.resetDashboard()">↻ NEW DATA</span>
+            </div>
+
+            <!-- KPI Grid (populated by JavaScript) -->
+            <div id="kpiGrid" class="kpi-grid"></div>
+
+            <!-- Table Section -->
+            <div class="table-section">
+                <div class="section-title">📊 MONTHLY PERFORMANCE DETAILS - LATEST MONTH</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>KPI</th>
+                            <th>🔵 PLANT-05</th>
+                            <th>🎯 TARGET</th>
+                            <th>📈 STATUS</th>
+                            <th>🟠 PLANT-06</th>
+                            <th>🎯 TARGET</th>
+                            <th>📈 STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <span id="lastUpdated"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Factor Modal -->
+    <div id="factorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalKPI">Factors</h2>
+                <button class="close-btn" onclick="UI.closeModal()">✕</button>
+            </div>
+            
+            <!-- Factor Tabs -->
+            <div class="factor-tabs">
+                <button id="tabOTD" class="factor-tab active" onclick="Factors.switchTab('OTD')">📦 OTD</button>
+                <button id="tabOEE" class="factor-tab" onclick="Factors.switchTab('OEE')">⚙️ OEE</button>
+                <button id="tabYMR" class="factor-tab" onclick="Factors.switchTab('YMR')">🧵 YMR</button>
+            </div>
+
+            <!-- Month Filter for Factors -->
+            <div class="factor-month-filter">
+                <label>📅 Month:</label>
+                <select id="factorMonthSelect" onchange="Factors.changeMonth(this.value)">
+                    <option value="All">All Months</option>
+                </select>
+            </div>
+
+            <!-- Factor Charts Grid -->
+            <div id="factorContent" class="factor-grid">
+                <!-- Plant-05 Factor Chart -->
+                <div class="factor-card">
+                    <h3 id="plant05Title">🔵 PLANT-05</h3>
+                    <div id="factorChart05" class="factor-chart"></div>
+                </div>
+                <!-- Plant-06 Factor Chart -->
+                <div class="factor-card">
+                    <h3 id="plant06Title">🟠 PLANT-06</h3>
+                    <div id="factorChart06" class="factor-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files (load in correct order) -->
+    <script src="js/config.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/chart-renderer.js"></script>
+    <script src="js/factors.js"></script>
+    <script src="js/ui-controller.js"></script>
+</body>
+</html>

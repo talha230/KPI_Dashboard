@@ -1,0 +1,700 @@
+/* =============================================
+   KPI DASHBOARD - BLACK SHINY GLASS THEME
+   ============================================= */
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Black Shiny Background */
+body {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    background: radial-gradient(circle at 30% 30%, #2a2a2a, #0a0a0a);
+    min-height: 100vh;
+    padding: 25px;
+}
+
+/* Glass Container */
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+    background: linear-gradient(145deg, rgba(30,30,30,0.95) 0%, rgba(20,20,20,0.98) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05) inset;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* =============================================
+   HEADER SECTION
+   ============================================= */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.header h1 {
+    font-size: 32px;
+    font-weight: 400;
+    background: linear-gradient(135deg, #fff, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(255,255,255,0.1);
+}
+
+/* Data Badge */
+.data-badge {
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+    color: #8bc34a;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #3a3a3a;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.data-badge:hover {
+    border-color: #8bc34a;
+    box-shadow: 0 5px 20px rgba(139, 195, 74, 0.2);
+}
+
+/* =============================================
+   PASTE BARS
+   ============================================= */
+.paste-bar {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
+    border: 2px dashed rgba(102, 126, 234, 0.5);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.paste-bar.hidden {
+    display: none;
+}
+
+.paste-bar h3 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 400;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.paste-bar textarea {
+    width: 100%;
+    height: 150px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 15px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    margin-bottom: 20px;
+    resize: vertical;
+}
+
+.paste-bar textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.paste-bar select {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 15px;
+    min-width: 200px;
+    cursor: pointer;
+}
+
+.paste-bar select option {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+/* Factor Paste Bar - Different Color */
+.factor-paste {
+    border-color: rgba(255, 152, 0, 0.5);
+}
+
+.factor-paste h3 {
+    color: #ffb74d;
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: all 0.3s;
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.5);
+}
+
+button.secondary {
+    background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+button.secondary:hover {
+    background: linear-gradient(135deg, #5a5a5a, #3a3a3a);
+}
+
+/* Factor Button */
+.factor-btn {
+    background: linear-gradient(135deg, #ff9800, #f44336);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    transition: all 0.3s;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.factor-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+}
+
+/* =============================================
+   CONTROL BAR
+   ============================================= */
+.control-bar {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 15px 25px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    flex-wrap: wrap;
+}
+
+.control-bar label {
+    color: #aaa;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Select Dropdown */
+select {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 14px;
+    min-width: 200px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+select:hover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+select option {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+/* Value Toggle Buttons */
+.value-toggle {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    background: rgba(0,0,0,0.2);
+    padding: 5px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.value-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: transparent;
+    color: #888;
+    box-shadow: none;
+    margin: 0;
+}
+
+.value-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Reset Link */
+.reset-link {
+    color: #8bc34a;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 50px;
+    background: rgba(139, 195, 74, 0.1);
+    border: 1px solid rgba(139, 195, 74, 0.2);
+    transition: all 0.3s;
+}
+
+.reset-link:hover {
+    background: rgba(139, 195, 74, 0.2);
+    border-color: #8bc34a;
+}
+
+/* =============================================
+   KPI GRID
+   ============================================= */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+/* KPI Card - Glass Effect */
+.kpi-card {
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+/* KPI Header */
+.kpi-header {
+    padding: 15px 20px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kpi-title {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* Direction Badge */
+.direction-badge {
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.higher {
+    background: rgba(76, 175, 80, 0.15);
+    color: #8bc34a;
+    border: 1px solid rgba(139, 195, 74, 0.3);
+}
+
+.lower {
+    background: rgba(255, 152, 0, 0.15);
+    color: #ffb74d;
+    border: 1px solid rgba(255, 183, 77, 0.3);
+}
+
+/* KPI Content */
+.kpi-content {
+    padding: 20px;
+}
+
+/* Chart Container */
+.chart-container {
+    width: 100%;
+    height: 260px;
+    margin-bottom: 12px;
+    border-radius: 15px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.2);
+}
+
+/* =============================================
+   YTD BOXES
+   ============================================= */
+.ytd-container {
+    display: flex;
+    gap: 12px;
+    margin: 8px 0 0 0;
+}
+
+.ytd-box {
+    flex: 1;
+    padding: 10px;
+    border-radius: 12px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s;
+}
+
+.ytd-box:hover {
+    transform: scale(1.02);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.ytd-box.single {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+.ytd-box.plant05 {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.15), rgba(33, 150, 243, 0.05));
+    border-color: rgba(33, 150, 243, 0.3);
+}
+
+.ytd-box.plant06 {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 152, 0, 0.05));
+    border-color: rgba(255, 152, 0, 0.3);
+}
+
+.ytd-label {
+    color: #aaa;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+}
+
+.ytd-value {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.ytd-target {
+    color: #888;
+    font-size: 10px;
+}
+
+/* =============================================
+   TABLE SECTION
+   ============================================= */
+.table-section {
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-top: 30px;
+}
+
+.section-title {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border-left: 4px solid #667eea;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: rgba(0,0,0,0.3);
+    color: #aaa;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+td {
+    padding: 15px;
+    color: #fff;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+tr:hover td {
+    background: rgba(255,255,255,0.02);
+}
+
+/* Status Badges */
+.green-bg {
+    background: rgba(76, 175, 80, 0.15);
+    color: #8bc34a;
+    padding: 5px 12px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 1px solid rgba(139, 195, 74, 0.3);
+}
+
+.red-bg {
+    background: rgba(244, 67, 54, 0.15);
+    color: #ff6b6b;
+    padding: 5px 12px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+/* =============================================
+   MODAL - FACTOR VIEW
+   ============================================= */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, rgba(30,30,30,0.95), rgba(20,20,20,0.98));
+    border-radius: 30px;
+    padding: 30px;
+    max-width: 1200px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.modal-header h2 {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.close-btn {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: rotate(90deg);
+}
+
+/* Factor Tabs */
+.factor-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+
+.factor-tab {
+    background: transparent;
+    color: #aaa;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0;
+    box-shadow: none;
+}
+
+.factor-tab:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+.factor-tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* Factor Grid */
+.factor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.factor-card {
+    background: rgba(255,255,255,0.02);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.factor-card h3 {
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-left: 4px solid #ff9800;
+}
+
+.factor-chart {
+    height: 250px;
+    width: 100%;
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.footer {
+    margin-top: 25px;
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+/* =============================================
+   UTILITY CLASSES
+   ============================================= */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+/* =============================================
+   RESPONSIVE DESIGN
+   ============================================= */
+@media (max-width: 1400px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .control-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .value-toggle {
+        margin-left: 0;
+        justify-content: center;
+    }
+    
+    .factor-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .header h1 {
+        font-size: 24px;
+    }
+}

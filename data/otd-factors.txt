@@ -1,0 +1,47 @@
+			HD5	HD5	HD6	HD6
+Month	STATUS	RESPONSIBILITY	# of Orders	%	# of Orders	%
+Jul	Delayed	Customer	32	9%	3	5%
+Jul	Delayed	Other (Customer)	7	2%		0%
+Jul	Delayed	Operations	8	2%		0%
+Jul	Delayed	P & S (Yarns)	5	1%		0%
+Jul	Delayed	PD	2	1%		0%
+Jul	Delayed	AR/ OSP	5	1%		0%
+Jul	Delayed	IS	6	2%		0%
+Jul	Delayed		1	0%		0%
+Jul	On Time		275	81%	58	95%
+Aug	Delayed	Customer	20	8%		0%
+Aug	Delayed	Other (Customer)	1	0%		0%
+Aug	Delayed	P & S (Yarns)	3	1%		0%
+Aug	On Time		217	90%	61	100%
+Sep	Delayed	Customer	29	9%		0%
+Sep	Delayed		3	1%		0%
+Sep	On Time		309	91%	49	100%
+Oct	Delayed	Customer	11	4%		0%
+Oct	Delayed	Operations	6	2%		0%
+Oct	Delayed	PD	1	0%	1	3%
+Oct	Delayed	IS	1	0%		0%
+Oct	Delayed	Other (Internal)	1	0%		0%
+Oct	Delayed		4	1%		0%
+Oct	On Time		269	92%	29	97%
+Nov	Delayed	Customer	8	3%	1	1%
+Nov	Delayed	Operations	1	0%	1	1%
+Nov	Delayed	P & S (Yarns)	1	0%		0%
+Nov	Delayed	Supply Planning	1	0%		0%
+Nov	Delayed		1	0%		0%
+Nov	On Time		248	95%	144	99%
+Dec	Delayed	Customer	1	0%	30	18%
+Dec	Delayed	Operations	5	1%	6	4%
+Dec	Delayed	P & S (Yarns)	8	2%	2	1%
+Dec	Delayed	Logistics (I&E)	2	1%		0%
+Dec	On Time		361	96%	127	77%
+Jan	Delayed	Customer	25	8%	22	13%
+Jan	Delayed	Operations	2	1%	3	2%
+Jan	Delayed	P & S (Yarns)	8	3%	2	1%
+Jan	Delayed	Logistics (I&E)	3	1%		0%
+Jan	On Time		280	88%	139	84%
+Feb	Delayed	Customer	1	0%	20	15%
+Feb	Delayed	Operations	1	0%	5	4%
+Feb	Delayed	P & S (Yarns)	2	1%	2	1%
+Feb	Delayed		1	0%		0%
+Feb	Delayed	S & M		0%	1	1%
+Feb	On Time		204	98%	108	79%
