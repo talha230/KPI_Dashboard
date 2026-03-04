@@ -1,25 +1,127 @@
-Month	Parameters	Plant-05	Plant-06
-Feb-26	C Grade	2.87%	2.95%
-Feb-26	Shortfall	5.61%	4.97%
-Feb-26	Yarn Waste	0.10%	0.10%
-Feb-26	UC Small Lots	0.00%	0.00%
-Feb-26	C + Shortfall	8.48%	7.92%
-Feb-26	C + Shortfall + Yarn Waste	8.58%	8.02%
-Feb-26	"Knitting Yield Incl.
-CF+CY+ GALK+UC"	91.78%	89.95%
-Feb-26	"Invisible
-Gain/Loss %Age"	-0.36%	2.03%
-Feb-26	"% Waste Excl. 
-CF+CYW+USL"	8.22%	10.05%
-YTD	C Grade	2.60%	2.67%
-YTD	Shortfall	4.36%	4.11%
-YTD	Yarn Waste	0.20%	0.33%
-YTD	UC Small Lots	0.90%	0.38%
-YTD	C + Shortfall	6.96%	6.78%
-YTD	C + Shortfall + Yarn Waste	7.16%	7.11%
-YTD	"Knitting Yield Incl.
-CF+CY+ GALK+UC"	92.29%	93.07%
-YTD	"Invisible
-Gain/Loss %Age"	0.54%	-0.19%
-YTD	"% Waste Excl. 
-CF+CYW+USL"	7.71%	6.93%
+Plant	Month	Attribute	Value
+Plant-05	Jul-25	Shortfall	4.61%
+Plant-05	Jul-25	C Grade	2.37%
+Plant-05	Jul-25	Yarn Waste	0.09%
+Plant-05	Jul-25	UC Small Lots	0.43%
+Plant-05	Jul-25	Gain/Loss %	0.16%
+Plant-05	Jul-25	Knitting Yield	92.77%
+Plant-05	Jul-25	% Waste	7.23%
+Plant-06	Jul-25	Shortfall	3.12%
+Plant-06	Jul-25	C Grade	2.29%
+Plant-06	Jul-25	Yarn Waste	0.31%
+Plant-06	Jul-25	UC Small Lots	0.64%
+Plant-06	Jul-25	Gain/Loss %	-0.41%
+Plant-06	Jul-25	Knitting Yield	94.69%
+Plant-06	Jul-25	% Waste	5.31%
+Plant-05	Aug-25	Shortfall	3.78%
+Plant-05	Aug-25	C Grade	2.41%
+Plant-05	Aug-25	Yarn Waste	0.15%
+Plant-05	Aug-25	UC Small Lots	0.34%
+Plant-05	Aug-25	Gain/Loss %	0.19%
+Plant-05	Aug-25	Knitting Yield	93.47%
+Plant-05	Aug-25	% Waste	6.53%
+Plant-06	Aug-25	Shortfall	4.39%
+Plant-06	Aug-25	C Grade	2.82%
+Plant-06	Aug-25	Yarn Waste	0.47%
+Plant-06	Aug-25	UC Small Lots	0.04%
+Plant-06	Aug-25	Gain/Loss %	-1.41%
+Plant-06	Aug-25	Knitting Yield	93.74%
+Plant-06	Aug-25	% Waste	6.26%
+Plant-05	Sept-25	Shortfall	4.34%
+Plant-05	Sept-25	C Grade	2.30%
+Plant-05	Sept-25	Yarn Waste	0.32%
+Plant-05	Sept-25	UC Small Lots	0.59%
+Plant-05	Sept-25	Gain/Loss %	-1.11%
+Plant-05	Sept-25	Knitting Yield	94.16%
+Plant-05	Sept-25	% Waste	5.84%
+Plant-06	Sept-25	Shortfall	3.19%
+Plant-06	Sept-25	C Grade	2.09%
+Plant-06	Sept-25	Yarn Waste	0.43%
+Plant-06	Sept-25	UC Small Lots	2.21%
+Plant-06	Sept-25	Gain/Loss %	-3.24%
+Plant-06	Sept-25	Knitting Yield	97.53%
+Plant-06	Sept-25	% Waste	2.47%
+Plant-05	Oct-25	Shortfall	4.14%
+Plant-05	Oct-25	C Grade	2.79%
+Plant-05	Oct-25	Yarn Waste	0.09%
+Plant-05	Oct-25	UC Small Lots	0.80%
+Plant-05	Oct-25	Gain/Loss %	-1.78%
+Plant-05	Oct-25	Knitting Yield	94.76%
+Plant-05	Oct-25	% Waste	5.24%
+Plant-06	Oct-25	Shortfall	1.50%
+Plant-06	Oct-25	C Grade	1.99%
+Plant-06	Oct-25	Yarn Waste	0.14%
+Plant-06	Oct-25	UC Small Lots	0.02%
+Plant-06	Oct-25	Gain/Loss %	-0.42%
+Plant-06	Oct-25	Knitting Yield	96.78%
+Plant-06	Oct-25	% Waste	3.22%
+Plant-05	Nov-25	Shortfall	4.72%
+Plant-05	Nov-25	C Grade	2.81%
+Plant-05	Nov-25	Yarn Waste	0.18%
+Plant-05	Nov-25	UC Small Lots	2.67%
+Plant-05	Nov-25	Gain/Loss %	-2.41%
+Plant-05	Nov-25	Knitting Yield	94.70%
+Plant-05	Nov-25	% Waste	5.30%
+Plant-06	Nov-25	Shortfall	3.54%
+Plant-06	Nov-25	C Grade	2.92%
+Plant-06	Nov-25	Yarn Waste	0.12%
+Plant-06	Nov-25	UC Small Lots	0.27%
+Plant-06	Nov-25	Gain/Loss %	-1.50%
+Plant-06	Nov-25	Knitting Yield	94.92%
+Plant-06	Nov-25	% Waste	5.08%
+Plant-05	Dec-25	Shortfall	4.65%
+Plant-05	Dec-25	C Grade	3.10%
+Plant-05	Dec-25	Yarn Waste	0.36%
+Plant-05	Dec-25	UC Small Lots	1.11%
+Plant-05	Dec-25	Gain/Loss %	-0.60%
+Plant-05	Dec-25	Knitting Yield	92.49%
+Plant-05	Dec-25	% Waste	7.51%
+Plant-06	Dec-25	Shortfall	5.34%
+Plant-06	Dec-25	C Grade	3.07%
+Plant-06	Dec-25	Yarn Waste	0.10%
+Plant-06	Dec-25	UC Small Lots	0.21%
+Plant-06	Dec-25	Gain/Loss %	1.15%
+Plant-06	Dec-25	Knitting Yield	90.34%
+Plant-06	Dec-25	% Waste	9.66%
+Plant-05	Jan-26	Shortfall	4.43%
+Plant-05	Jan-26	C Grade	2.61%
+Plant-05	Jan-26	Yarn Waste	0.27%
+Plant-05	Jan-26	UC Small Lots	0.70%
+Plant-05	Jan-26	Gain/Loss %	9.02%
+Plant-05	Jan-26	Knitting Yield	83.66%
+Plant-05	Jan-26	% Waste	16.34%
+Plant-06	Jan-26	Shortfall	5.24%
+Plant-06	Jan-26	C Grade	2.75%
+Plant-06	Jan-26	Yarn Waste	0.65%
+Plant-06	Jan-26	UC Small Lots	0.44%
+Plant-06	Jan-26	Gain/Loss %	1.25%
+Plant-06	Jan-26	Knitting Yield	90.10%
+Plant-06	Jan-26	% Waste	9.90%
+Plant-05	Feb-26	Shortfall	4.50%
+Plant-05	Feb-26	C Grade	2.66%
+Plant-05	Feb-26	Yarn Waste	0.11%
+Plant-05	Feb-26	UC Small Lots	0.08%
+Plant-05	Feb-26	Gain/Loss %	0.15%
+Plant-05	Feb-26	Knitting Yield	92.58%
+Plant-05	Feb-26	% Waste	7.42%
+Plant-06	Feb-26	Shortfall	4.32%
+Plant-06	Feb-26	C Grade	2.89%
+Plant-06	Feb-26	Yarn Waste	0.06%
+Plant-06	Feb-26	UC Small Lots	0.39%
+Plant-06	Feb-26	Gain/Loss %	1.29%
+Plant-06	Feb-26	Knitting Yield	91.43%
+Plant-06	Feb-26	% Waste	8.57%
+Plant-05	YTD	Shortfall	4.37%
+Plant-05	YTD	C Grade	2.61%
+Plant-05	YTD	Yarn Waste	0.19%
+Plant-05	YTD	UC Small Lots	0.82%
+Plant-05	YTD	Gain/Loss %	0.48%
+Plant-05	YTD	Knitting Yield	92.35%
+Plant-05	YTD	% Waste	7.65%
+Plant-06	YTD	Shortfall	4.14%
+Plant-06	YTD	C Grade	2.71%
+Plant-06	YTD	Yarn Waste	0.29%
+Plant-06	YTD	UC Small Lots	0.38%
+Plant-06	YTD	Gain/Loss %	0.02%
+Plant-06	YTD	Knitting Yield	92.84%
+Plant-06	YTD	% Waste	7.16%

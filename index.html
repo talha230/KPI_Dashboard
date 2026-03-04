@@ -6,43 +6,8 @@
     <title>KPI Performance Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <style>
-        /* Additional inline styles for modal month filter */
-        .factor-month-filter {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.03);
-            padding: 10px 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .factor-month-filter label {
-            color: #aaa;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .factor-month-filter select {
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 15px;
-            border-radius: 10px;
-            font-size: 14px;
-            min-width: 150px;
-            cursor: pointer;
-        }
-        .factor-month-filter select:hover {
-            border-color: #667eea;
-        }
-        .factor-month-filter select option {
-            background: #1a1a1a;
-            color: #fff;
-        }
-    </style>
 </head>
-<body>
+<body class="theme-default">
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -52,7 +17,7 @@
             </div>
         </div>
 
-        <!-- Main Data Paste Bar (shown if no data files found) -->
+        <!-- Main Data Paste Bar -->
         <div id="pasteBar" class="paste-bar">
             <h3>📋 PASTE YOUR MAIN KPI DATA</h3>
             <textarea id="mainDataInput" placeholder="Paste main KPI data here... (tab-separated)"></textarea>
@@ -65,7 +30,7 @@
             </p>
         </div>
 
-        <!-- Factor Data Paste Bar (shown when clicking ADD FACTOR DATA) -->
+        <!-- Factor Data Paste Bar -->
         <div id="factorPasteBar" class="paste-bar factor-paste" style="display: none;">
             <h3>📋 PASTE FACTOR DATA (OTD, OEE, YMR)</h3>
             <select id="factorKPI">
@@ -73,14 +38,14 @@
                 <option value="OEE">⚙️ OEE Factors</option>
                 <option value="YMR">🧵 YMR Factors</option>
             </select>
-            <textarea id="factorDataInput" placeholder="Paste factor data for selected KPI... (tab-separated with Month column)"></textarea>
+            <textarea id="factorDataInput" placeholder="Paste factor data for selected KPI... (tab-separated)"></textarea>
             <div>
                 <button onclick="UI.embedFactorData()">📊 LOAD FACTORS</button>
                 <button class="secondary" onclick="UI.hideFactorPaste()">CANCEL</button>
             </div>
         </div>
 
-        <!-- Dashboard Content (shown after data loads) -->
+        <!-- Dashboard Content -->
         <div id="dashboardContent" style="display: none;">
             <!-- Control Bar -->
             <div class="control-bar">
@@ -93,19 +58,28 @@
                     </select>
                 </div>
                 
+                <div>
+                    <label>🎨 THEME</label>
+                    <select id="themeSelector">
+                        <option value="default">🌑 Default Dark</option>
+                        <option value="ocean">🌊 Ocean Blue</option>
+                        <option value="sunset">🌅 Sunset Orange</option>
+                    </select>
+                </div>
+                
                 <div class="value-toggle">
-                    <button id="showBtn" class="value-btn active" onclick="UI.setValueDisplay(true)">📊 SHOW VALUES</button>
-                    <button id="hideBtn" class="value-btn" onclick="UI.setValueDisplay(false)">🚫 HIDE VALUES</button>
+                    <button id="showBtn" class="value-btn active">📊 SHOW VALUES</button>
+                    <button id="hideBtn" class="value-btn">🚫 HIDE VALUES</button>
                 </div>
                 
                 <div>
-                    <button id="showFactorBtn" class="secondary" onclick="UI.showFactorPaste()" style="display: none;">📦 ADD FACTOR DATA</button>
+                    <button id="showFactorBtn" class="secondary" style="display: none;">📦 ADD FACTOR DATA</button>
                 </div>
                 
-                <span class="reset-link" onclick="UI.resetDashboard()">↻ NEW DATA</span>
+                <span class="reset-link" id="resetLink">↻ NEW DATA</span>
             </div>
 
-            <!-- KPI Grid (populated by JavaScript) -->
+            <!-- KPI Grid -->
             <div id="kpiGrid" class="kpi-grid"></div>
 
             <!-- Table Section -->
@@ -139,36 +113,38 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modalKPI">Factors</h2>
-                <button class="close-btn" onclick="UI.closeModal()">✕</button>
+                <button class="close-btn" id="closeModalBtn">✕</button>
             </div>
             
             <!-- Factor Tabs -->
             <div class="factor-tabs">
-                <button id="tabOTD" class="factor-tab active" onclick="Factors.switchTab('OTD')">📦 OTD</button>
-                <button id="tabOEE" class="factor-tab" onclick="Factors.switchTab('OEE')">⚙️ OEE</button>
-                <button id="tabYMR" class="factor-tab" onclick="Factors.switchTab('YMR')">🧵 YMR</button>
+                <button id="tabOTD" class="factor-tab">📦 OTD</button>
+                <button id="tabOEE" class="factor-tab">⚙️ OEE</button>
+                <button id="tabYMR" class="factor-tab">🧵 YMR</button>
             </div>
 
-            <!-- Month Filter for Factors -->
-            <div class="factor-month-filter">
-                <label>📅 Month:</label>
-                <select id="factorMonthSelect" onchange="Factors.changeMonth(this.value)">
-                    <option value="All">All Months</option>
-                </select>
+            <!-- Filters -->
+            <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                <div class="factor-month-filter" style="flex: 1;">
+                    <label>📅 Month:</label>
+                    <select id="factorMonthSelect">
+                        <option value="YTD">YTD</option>
+                    </select>
+                </div>
+                
+                <div class="factor-month-filter" style="flex: 1;">
+                    <label>🏭 Plant:</label>
+                    <select id="factorPlantSelect">
+                        <option value="All">🌐 All Plants</option>
+                        <option value="Plant-05">🔵 Plant-05</option>
+                        <option value="Plant-06">🟠 Plant-06</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Factor Charts Grid -->
             <div id="factorContent" class="factor-grid">
-                <!-- Plant-05 Factor Chart -->
-                <div class="factor-card">
-                    <h3 id="plant05Title">🔵 PLANT-05</h3>
-                    <div id="factorChart05" class="factor-chart"></div>
-                </div>
-                <!-- Plant-06 Factor Chart -->
-                <div class="factor-card">
-                    <h3 id="plant06Title">🟠 PLANT-06</h3>
-                    <div id="factorChart06" class="factor-chart"></div>
-                </div>
+                <!-- Charts will be inserted here -->
             </div>
         </div>
     </div>

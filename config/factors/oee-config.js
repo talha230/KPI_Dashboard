@@ -7,7 +7,7 @@ const OEEConfig = {
     colors: ['#f44336', '#ff9800', '#2196f3', '#4caf50', '#9c27b0', '#ffeb3b', '#00bcd4', '#e91e63'],
     dataFile: 'data/oee.txt',
     
-    // Parse OEE data from your specific format
+    // Parse OEE data
     parseData: function(rawData) {
         console.log('Parsing OEE data...');
         const rows = rawData.split('\n').filter(row => row.trim());
@@ -31,26 +31,25 @@ const OEEConfig = {
             months.add(month);
             
             if (p05Val > 0) {
-                plant05Data.push({
-                    month,
-                    reason: factor,
-                    value: p05Val
-                });
+                plant05Data.push({ month, reason: factor, value: p05Val });
             }
             
             if (p06Val > 0) {
-                plant06Data.push({
-                    month,
-                    reason: factor,
-                    value: p06Val
-                });
+                plant06Data.push({ month, reason: factor, value: p06Val });
             }
+        });
+        
+        // Sort months with YTD last
+        const sortedMonths = Array.from(months).sort((a,b) => {
+            if (a === 'YTD') return 1;
+            if (b === 'YTD') return -1;
+            return 0;
         });
         
         return {
             plant05: plant05Data,
             plant06: plant06Data,
-            months: Array.from(months).sort((a,b) => CONFIG.monthOrder[a] - CONFIG.monthOrder[b])
+            months: sortedMonths
         };
     },
     
@@ -58,20 +57,28 @@ const OEEConfig = {
     getData: function(data, plant, month) {
         const plantData = plant === 'Plant-05' ? data.plant05 : data.plant06;
         
-        if (month === 'All') {
-            // Average across all months
+        if (month === 'YTD') {
+            // Average across all months for YTD
             const reasons = [...new Set(plantData.map(d => d.reason))];
             return reasons.map(reason => {
                 const values = plantData.filter(d => d.reason === reason).map(d => d.value);
                 const avg = values.reduce((a,b) => a + b, 0) / values.length;
                 return { reason, value: avg };
-            }).sort((a,b) => b.value - a.value);
+            }).filter(d => d.value > 0.1).sort((a,b) => b.value - a.value);
         } else {
-            // Filter by month
+            // Filter by specific month
             const monthData = plantData.filter(d => d.month === month);
-            return monthData.map(d => ({ reason: d.reason, value: d.value }))
-                           .sort((a,b) => b.value - a.value);
+            const reasons = [...new Set(monthData.map(d => d.reason))];
+            return reasons.map(reason => {
+                const value = monthData.find(d => d.reason === reason)?.value || 0;
+                return { reason, value };
+            }).filter(d => d.value > 0.1).sort((a,b) => b.value - a.value);
         }
+    },
+    
+    // Get YTD data (averaged)
+    getYTDData: function(data, plant) {
+        return this.getData(data, plant, 'YTD');
     }
 };
 

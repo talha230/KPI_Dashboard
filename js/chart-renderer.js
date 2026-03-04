@@ -4,14 +4,53 @@
 
 const ChartRenderer = {
     showValues: true,
+    currentTheme: 'default',
+    
+    // Theme configurations
+    themes: {
+        default: {
+            background: 'rgba(0,0,0,0)',
+            plotBg: 'rgba(0,0,0,0.2)',
+            textColor: '#fff',
+            gridColor: 'rgba(255,255,255,0.1)',
+            plant05: '#2196f3',
+            plant06: '#ff9800'
+        },
+        ocean: {
+            background: 'rgba(0,20,40,0)',
+            plotBg: 'rgba(0,40,80,0.3)',
+            textColor: '#0d47a1',
+            gridColor: 'rgba(25,118,210,0.2)',
+            plant05: '#1976d2',
+            plant06: '#ff9800'
+        },
+        sunset: {
+            background: 'rgba(255,255,255,0)',
+            plotBg: 'rgba(255,200,150,0.1)',
+            textColor: '#e65100',
+            gridColor: 'rgba(230,81,0,0.2)',
+            plant05: '#e65100',
+            plant06: '#ff9800'
+        }
+    },
+    
+    // Change theme
+    changeTheme: function(themeName) {
+        this.currentTheme = themeName;
+        this.updateAll();
+    },
     
     // Update all charts and table
     updateAll: function() {
         console.log('ChartRenderer.updateAll called');
         
         const plantFilter = document.getElementById('plantFilter').value;
-        const kpis = [...new Set([...DataManager.monthlyData.map(d => d.KPI), 
-                                  ...DataManager.ytdData.map(d => d.KPI)])].sort();
+        
+        // Get unique KPIs from both monthly and YTD data
+        const allKpis = new Set();
+        DataManager.monthlyData.forEach(d => allKpis.add(d.KPI));
+        DataManager.ytdData.forEach(d => allKpis.add(d.KPI));
+        const kpis = Array.from(allKpis).sort();
         
         console.log('KPIs found:', kpis);
         
@@ -23,11 +62,25 @@ const ChartRenderer = {
         const latestMonth = this.getLatestMonth();
         console.log('Latest month:', latestMonth);
         
+        // Update section title with latest month
+        const sectionTitle = document.querySelector('.section-title');
+        if (sectionTitle) {
+            sectionTitle.innerHTML = `📋 ${latestMonth} Performance`;
+        }
+        
         const latestMonthly = DataManager.monthlyData.filter(d => d.Month === latestMonth);
         console.log('Latest monthly data:', latestMonthly.length, 'rows');
         
         this.renderGrid(kpis, latestMonthly, plantFilter);
-        this.renderTable(kpis, latestMonthly);
+        
+        // Wait for DOM to update before rendering charts
+        setTimeout(() => {
+            kpis.forEach(kpi => {
+                this.createChart(kpi, plantFilter);
+            });
+            // Render table after charts
+            this.renderTable(kpis, latestMonthly);
+        }, 100);
     },
     
     // Render KPI grid
@@ -50,9 +103,6 @@ const ChartRenderer = {
             
             const card = this.createCard(kpi, plant05monthly, plant06monthly, plantFilter);
             grid.appendChild(card);
-            
-            // Create chart after card is added
-            setTimeout(() => this.createChart(kpi, plantFilter), 100);
         });
     },
     
@@ -67,10 +117,14 @@ const ChartRenderer = {
         // Add YTD boxes
         const ytdHtml = this.createYTDBoxes(kpi, direction);
         
-        // Add factor button if this KPI has factor config
-        const hasFactor = window.getFactorConfig && getFactorConfig(kpi) ? true : false;
-        const factorButton = hasFactor ? 
-            `<button class="factor-btn" onclick="Factors.openModal('${kpi}')">🔍 VIEW ${kpi} FACTORS</button>` : '';
+        // Add factor button
+        const factorKPI = kpi === 'Actual OEE' ? 'OEE' : kpi;
+        const hasFactor = window.getFactorConfig && getFactorConfig(factorKPI) ? true : false;
+        
+        let factorButtonHtml = '';
+        if (hasFactor) {
+            factorButtonHtml = `<button class="factor-btn" onclick="Factors.openModal('${kpi}')">🔍 VIEW ${kpi} FACTORS</button>`;
+        }
         
         card.innerHTML = `
             <div class="kpi-header">
@@ -80,9 +134,9 @@ const ChartRenderer = {
                 </span>
             </div>
             <div class="kpi-content">
-                <div id="${chartId}" class="chart-container" style="height:200px;"></div>
+                <div id="${chartId}" class="chart-container"></div>
                 ${ytdHtml}
-                ${factorButton}
+                ${factorButtonHtml}
             </div>
         `;
         
@@ -102,14 +156,40 @@ const ChartRenderer = {
                 <div class="ytd-container">
                     <div class="ytd-box plant05">
                         <div class="ytd-label">PLANT-05 YTD</div>
-                        <div class="ytd-value" style="color: ${plant05Good ? CONFIG.colors['target-green'] : CONFIG.colors['target-red']}">
+                        <div class="ytd-value ${plant05Good ? 'on-target' : 'off-target'}">
                             ${this.formatValue(plant05ytd.Achieved, plant05ytd.IsPercent)}
                         </div>
                         <div class="ytd-target">Target: ${this.formatValue(plant05ytd.Target, plant05ytd.IsPercent)}</div>
                     </div>
                     <div class="ytd-box plant06">
                         <div class="ytd-label">PLANT-06 YTD</div>
-                        <div class="ytd-value" style="color: ${plant06Good ? CONFIG.colors['target-green'] : CONFIG.colors['target-red']}">
+                        <div class="ytd-value ${plant06Good ? 'on-target' : 'off-target'}">
+                            ${this.formatValue(plant06ytd.Achieved, plant06ytd.IsPercent)}
+                        </div>
+                        <div class="ytd-target">Target: ${this.formatValue(plant06ytd.Target, plant06ytd.IsPercent)}</div>
+                    </div>
+                </div>
+            `;
+        } else if (plant05ytd) {
+            const plant05Good = this.isGood(plant05ytd.Achieved, plant05ytd.Target, direction);
+            return `
+                <div class="ytd-container">
+                    <div class="ytd-box plant05">
+                        <div class="ytd-label">PLANT-05 YTD</div>
+                        <div class="ytd-value ${plant05Good ? 'on-target' : 'off-target'}">
+                            ${this.formatValue(plant05ytd.Achieved, plant05ytd.IsPercent)}
+                        </div>
+                        <div class="ytd-target">Target: ${this.formatValue(plant05ytd.Target, plant05ytd.IsPercent)}</div>
+                    </div>
+                </div>
+            `;
+        } else if (plant06ytd) {
+            const plant06Good = this.isGood(plant06ytd.Achieved, plant06ytd.Target, direction);
+            return `
+                <div class="ytd-container">
+                    <div class="ytd-box plant06">
+                        <div class="ytd-label">PLANT-06 YTD</div>
+                        <div class="ytd-value ${plant06Good ? 'on-target' : 'off-target'}">
                             ${this.formatValue(plant06ytd.Achieved, plant06ytd.IsPercent)}
                         </div>
                         <div class="ytd-target">Target: ${this.formatValue(plant06ytd.Target, plant06ytd.IsPercent)}</div>
@@ -130,9 +210,15 @@ const ChartRenderer = {
             return;
         }
         
-        const direction = allMonthly[0]?.Direction || CONFIG.defaultDirection;
+        const theme = this.themes[this.currentTheme];
         const months = this.sortMonths([...new Set(allMonthly.map(d => d.Month))]);
         const chartId = 'chart_' + kpi.replace(/[^a-zA-Z0-9]/g, '_');
+        
+        const chartElement = document.getElementById(chartId);
+        if (!chartElement) {
+            console.log('Chart element not found:', chartId);
+            return;
+        }
         
         console.log('Chart ID:', chartId);
         console.log('Months:', months);
@@ -145,7 +231,13 @@ const ChartRenderer = {
                 .sort((a,b) => CONFIG.monthOrder[a.Month] - CONFIG.monthOrder[b.Month]);
             
             if(plantData.length > 0) {
-                const values = plantData.map(d => d.Achieved * (d.IsPercent ? 100 : 1));
+                const values = plantData.map(d => {
+                    if (d.IsPercent) {
+                        return d.Achieved * 100;
+                    }
+                    return d.Achieved;
+                });
+                
                 maxValue = Math.max(maxValue, ...values);
                 
                 traces.push({
@@ -154,14 +246,15 @@ const ChartRenderer = {
                     mode: this.showValues ? 'lines+markers+text' : 'lines+markers',
                     text: this.showValues ? plantData.map(d => this.formatValue(d.Achieved, d.IsPercent)) : [],
                     textposition: 'top center',
-                    textfont: { size: 10, color: CONFIG.colors['Plant-05'] },
-                    line: { color: CONFIG.colors['Plant-05'], width: 2 },
+                    textfont: { size: 10, color: theme.plant05 },
+                    line: { color: theme.plant05, width: 2 },
                     marker: { 
                         size: 8,
-                        color: plantData.map(d => this.isGood(d.Achieved, d.Target, direction) ? '#4caf50' : '#f44336'),
+                        color: theme.plant05,
                         line: { color: '#fff', width: 1 }
                     },
-                    name: 'Plant-05'
+                    name: 'Plant-05',
+                    hovertemplate: '<b>%{y:.1f}%</b><extra></extra>',
                 });
             }
         }
@@ -171,7 +264,13 @@ const ChartRenderer = {
                 .sort((a,b) => CONFIG.monthOrder[a.Month] - CONFIG.monthOrder[b.Month]);
             
             if(plantData.length > 0) {
-                const values = plantData.map(d => d.Achieved * (d.IsPercent ? 100 : 1));
+                const values = plantData.map(d => {
+                    if (d.IsPercent) {
+                        return d.Achieved * 100;
+                    }
+                    return d.Achieved;
+                });
+                
                 maxValue = Math.max(maxValue, ...values);
                 
                 traces.push({
@@ -180,14 +279,15 @@ const ChartRenderer = {
                     mode: this.showValues ? 'lines+markers+text' : 'lines+markers',
                     text: this.showValues ? plantData.map(d => this.formatValue(d.Achieved, d.IsPercent)) : [],
                     textposition: 'bottom center',
-                    textfont: { size: 10, color: CONFIG.colors['Plant-06'] },
-                    line: { color: CONFIG.colors['Plant-06'], width: 2 },
+                    textfont: { size: 10, color: theme.plant06 },
+                    line: { color: theme.plant06, width: 2 },
                     marker: { 
                         size: 8,
-                        color: plantData.map(d => this.isGood(d.Achieved, d.Target, direction) ? '#4caf50' : '#f44336'),
+                        color: theme.plant06,
                         line: { color: '#fff', width: 1 }
                     },
-                    name: 'Plant-06'
+                    name: 'Plant-06',
+                    hovertemplate: '<b>%{y:.1f}%</b><extra></extra>',
                 });
             }
         }
@@ -195,30 +295,46 @@ const ChartRenderer = {
         if(traces.length > 0) {
             const layout = {
                 margin: { l: 40, r: 10, t: 10, b: 40 },
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                plot_bgcolor: 'rgba(0,0,0,0.2)',
-                font: { color: '#fff', size: 10 },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: theme.textColor, size: 10 },
                 xaxis: { 
                     tickangle: -45,
-                    gridcolor: 'rgba(255,255,255,0.1)',
-                    tickfont: { color: '#aaa', size: 9 },
+                    gridcolor: theme.gridColor,
+                    tickfont: { color: theme.textColor === '#fff' ? '#aaa' : theme.textColor, size: 9 },
                     categoryorder: 'array',
-                    categoryarray: months
+                    categoryarray: months,
+                    showticklabels: true,
+                    title: ''
                 },
                 yaxis: { 
-                    gridcolor: 'rgba(255,255,255,0.1)',
-                    tickfont: { color: '#aaa', size: 9 },
-                    range: [0, maxValue * CONFIG.yAxisPadding]
+                    gridcolor: theme.gridColor,
+                    tickfont: { color: theme.textColor === '#fff' ? '#aaa' : theme.textColor, size: 9 },
+                    range: [0, maxValue * CONFIG.yAxisPadding],
+                    title: ''
                 },
-                showlegend: traces.length > 1,
-                legend: { orientation: 'h', y: -0.3, font: { color: '#fff', size: 9 } },
-                hovermode: 'x'
+                showlegend: false,
+                hovermode: 'closest'
             };
             
-            Plotly.newPlot(chartId, traces, layout);
+            Plotly.newPlot(chartId, traces, layout, {displayModeBar: false, responsive: true});
             console.log('Chart plotted for', kpi);
         } else {
             console.log('No traces for', kpi);
+            // Show empty chart with message
+            Plotly.newPlot(chartId, [{
+                x: [0], y: [0], 
+                type: 'scatter', 
+                mode: 'text',
+                text: ['No data'],
+                textfont: { size: 14, color: '#aaa' }
+            }], {
+                margin: { l: 0, r: 0, t: 0, b: 0 },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                xaxis: { visible: false },
+                yaxis: { visible: false }
+            });
         }
     },
     
@@ -237,17 +353,16 @@ const ChartRenderer = {
         kpis.forEach(kpi => {
             const plant05 = latestMonthly.find(d => d.Plant === 'Plant-05' && d.KPI === kpi);
             const plant06 = latestMonthly.find(d => d.Plant === 'Plant-06' && d.KPI === kpi);
-            if (!plant05 && !plant06) return;
             
             const direction = plant05?.Direction || plant06?.Direction || CONFIG.defaultDirection;
             
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td style="color:#fff; font-weight:600;">${kpi}</td>
-                <td style="color:${CONFIG.colors['Plant-05']};">${plant05 ? this.formatValue(plant05.Achieved, plant05.IsPercent) : '-'}</td>
+                <td style="color:${this.themes[this.currentTheme].textColor}; font-weight:600;">${kpi}</td>
+                <td style="color:${this.themes[this.currentTheme].plant05};">${plant05 ? this.formatValue(plant05.Achieved, plant05.IsPercent) : '-'}</td>
                 <td style="color:#aaa;">${plant05 ? this.formatValue(plant05.Target, plant05.IsPercent) : '-'}</td>
                 <td>${plant05 ? this.getStatusBadge(plant05.Achieved, plant05.Target, direction) : '-'}</td>
-                <td style="color:${CONFIG.colors['Plant-06']};">${plant06 ? this.formatValue(plant06.Achieved, plant06.IsPercent) : '-'}</td>
+                <td style="color:${this.themes[this.currentTheme].plant06};">${plant06 ? this.formatValue(plant06.Achieved, plant06.IsPercent) : '-'}</td>
                 <td style="color:#aaa;">${plant06 ? this.formatValue(plant06.Target, plant06.IsPercent) : '-'}</td>
                 <td>${plant06 ? this.getStatusBadge(plant06.Achieved, plant06.Target, direction) : '-'}</td>
             `;
@@ -269,19 +384,14 @@ const ChartRenderer = {
             return (val * 100).toFixed(1) + '%';
         }
         if (Number.isInteger(val)) {
-            return val.toFixed(0);
+            return val.toString();
         }
-        if (Math.abs(val * 10 - Math.round(val * 10)) < 0.0001) {
-            return val.toFixed(1);
-        }
-        return val.toFixed(2);
+        return val.toFixed(1);
     },
     
     getStatusBadge: function(achieved, target, direction) {
         const good = this.isGood(achieved, target, direction);
-        return `<span class="${good ? 'green-bg' : 'red-bg'}" style="padding:4px 8px; border-radius:12px; display:inline-block;">
-                    ${good ? '✓ ON TARGET' : '✗ BELOW'}
-                </span>`;
+        return `<span class="${good ? 'green-bg' : 'red-bg'}">${good ? '✓ ON TARGET' : '✗ BELOW'}</span>`;
     },
     
     sortMonths: function(months) {

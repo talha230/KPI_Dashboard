@@ -1,100 +1,130 @@
-Month	STATUS	CUST_ID	RESPONSIBILITY	HD5	HD6
-Jul-25	Delayed	75	Operations	1	
-Jul-25	Delayed	75	IS	2	
-Jul-25	Delayed	81	Customer	2	3
-Jul-25	Delayed	81	Operations	2	
-Jul-25	Delayed	81	P & S (Yarns)	1	
-Jul-25	Delayed	81	IS	1	
-Jul-25	Delayed	165	P & S (Yarns)	1	
-Jul-25	Delayed	180	Customer	4	
-Jul-25	Delayed	180	Operations	1	
-Jul-25	Delayed	180	AR/ OSP	2	
-Jul-25	Delayed	180	IS	1	
-Jul-25	Delayed	186	Customer	5	
-Jul-25	Delayed	186	Other (Customer)	2	
-Jul-25	Delayed	186	AR/ OSP	3	
-Jul-25	Delayed	186	IS	1	
-Jul-25	Delayed	186		1	
-Jul-25	Delayed	213	Customer	16	
-Jul-25	Delayed	213	Other (Customer)	4	
-Jul-25	Delayed	213	Operations	3	
-Jul-25	Delayed	213	IS	1	
-Jul-25	Delayed	242	Customer	2	
-Jul-25	Delayed	242	Other (Customer)	1	
-Jul-25	Delayed	242	Operations	1	
-Jul-25	Delayed	242	P & S (Yarns)	3	
-Jul-25	Delayed	242	PD	2	
-Jul-25	Delayed	278	Customer	3	
-Jul-25	On Time			275	58
-Aug-25	Delayed	75	P & S (Yarns)	2	
-Aug-25	Delayed	186	Other (Customer)	1	
-Aug-25	Delayed	213	Customer	19	
-Aug-25	Delayed	242	Customer	1	
-Aug-25	Delayed	242	P & S (Yarns)	1	
-Aug-25	On Time			217	61
-Sep-25	Delayed	180	Customer	1	
-Sep-25	Delayed	213	Customer	21	
-Sep-25	Delayed	242	Customer	7	
-Sep-25	Delayed	242		3	
-Sep-25	On Time			309	49
-Oct-25	Delayed	81	Customer	1	
-Oct-25	Delayed	180	Other (Internal)	1	
-Oct-25	Delayed	200	PD		1
-Oct-25	Delayed	206	IS	1	
-Oct-25	Delayed	213	Customer	10	
-Oct-25	Delayed	213	Operations	1	
-Oct-25	Delayed	213	PD	1	
-Oct-25	Delayed	242	Operations	5	
-Oct-25	Delayed	242		4	
-Oct-25	On Time			269	29
-Nov-25	Delayed	141	Customer	2	1
-Nov-25	Delayed	141	Operations	1	1
-Nov-25	Delayed	180	Customer	2	
-Nov-25	Delayed	180	Supply Planning	1	
-Nov-25	Delayed	180		1	
-Nov-25	Delayed	186	Customer	2	
-Nov-25	Delayed	213	Customer	2	
-Nov-25	Delayed	213	P & S (Yarns)	1	
-Nov-25	On Time			248	144
-Dec-25	Delayed	81	Operations		1
-Dec-25	Delayed	81	P & S (Yarns)	1	2
-Dec-25	Delayed	141	Customer		8
-Dec-25	Delayed	177	Operations	1	
-Dec-25	Delayed	200	Customer		22
-Dec-25	Delayed	200	Operations		5
-Dec-25	Delayed	213	Operations	2	
-Dec-25	Delayed	213	P & S (Yarns)	7	
-Dec-25	Delayed	213	Logistics (I&E)	2	
-Dec-25	Delayed	242	Customer	1	
-Dec-25	Delayed	242	Operations	2	
-Dec-25	On Time			361	127
-Jan-26	Delayed	81	Operations	1	
-Jan-26	Delayed	141	Customer		13
-Jan-26	Delayed	141	Operations		1
-Jan-26	Delayed	141	P & S (Yarns)		2
-Jan-26	Delayed	177	Customer	1	
-Jan-26	Delayed	177	Operations	1	
-Jan-26	Delayed	180	P & S (Yarns)	1	
-Jan-26	Delayed	200	Customer		9
-Jan-26	Delayed	200	Operations		2
-Jan-26	Delayed	213	P & S (Yarns)	4	
-Jan-26	Delayed	213	Logistics (I&E)	3	
-Jan-26	Delayed	242	Customer	23	
-Jan-26	Delayed	242	P & S (Yarns)	3	
-Jan-26	Delayed	278	Customer	1	
-Jan-26	On Time			280	139
-Feb-26	Delayed	81	Operations		1
-Feb-26	Delayed	81	P & S (Yarns)		1
-Feb-26	Delayed	141	Customer		7
-Feb-26	Delayed	141	Operations		2
-Feb-26	Delayed	141	P & S (Yarns)		1
-Feb-26	Delayed	141	S & M		1
-Feb-26	Delayed	177	Customer	1	
-Feb-26	Delayed	177	Operations	1	
-Feb-26	Delayed	200	Customer		13
-Feb-26	Delayed	200	Operations		1
-Feb-26	Delayed	206	P & S (Yarns)	1	
-Feb-26	Delayed	213	Operations		1
-Feb-26	Delayed	213		1	
-Feb-26	Delayed	278	P & S (Yarns)	1	
-Feb-26	On Time			204	108
+Month	DIVISION_DESC	STATUS	CUST_ID	RESPONSIBILITY	# of Order
+Jan	HD5	Delayed	81	Operations	1
+Jan	HD5	Delayed	177	Customer	1
+Jan	HD5	Delayed	177	Operations	1
+Jan	HD5	Delayed	180	P & S (Yarns)	1
+Jan	HD5	Delayed	213	P & S (Yarns)	4
+Jan	HD5	Delayed	213	Logistics (I&E)	3
+Jan	HD5	Delayed	242	Customer	23
+Jan	HD5	Delayed	242	P & S (Yarns)	3
+Jan	HD5	Delayed	278	Customer	1
+Jan	HD5	Delayed Total			38
+Jan	HD5	On Time			280
+Jan	HD6	Delayed	141	Customer	13
+Jan	HD6	Delayed	141	Operations	1
+Jan	HD6	Delayed	141	P & S (Yarns)	2
+Jan	HD6	Delayed	200	Customer	9
+Jan	HD6	Delayed	200	Operations	2
+Jan	HD6	Delayed Total			27
+Jan	HD6	On Time			139
+Feb	HD5	Delayed	177	Customer	1
+Feb	HD5	Delayed	177	Operations	1
+Feb	HD5	Delayed	180	Operations	2
+Feb	HD5	Delayed	206	P & S (Yarns)	1
+Feb	HD5	Delayed	213	P & S (Yarns)	1
+Feb	HD5	Delayed	242	Operations	1
+Feb	HD5	Delayed	278	P & S (Yarns)	1
+Feb	HD5	Delayed Total			8
+Feb	HD5	On Time			262
+Feb	HD6	Delayed	81	Operations	1
+Feb	HD6	Delayed	81	P & S (Yarns)	2
+Feb	HD6	Delayed	141	Customer	7
+Feb	HD6	Delayed	141	Operations	1
+Feb	HD6	Delayed	141	P & S (Yarns)	1
+Feb	HD6	Delayed	141	S & M	1
+Feb	HD6	Delayed	141	Internal	1
+Feb	HD6	Delayed	200	Customer	13
+Feb	HD6	Delayed	200	Operations	1
+Feb	HD6	Delayed	206	P & S (Yarns)	2
+Feb	HD6	Delayed	213	Operations	1
+Feb	HD6	Delayed Total			31
+Feb	HD6	On Time			116
+Jul	HD5	Delayed	75	Operations	1
+Jul	HD5	Delayed	75	IS	2
+Jul	HD5	Delayed	81	Customer	2
+Jul	HD5	Delayed	81	Operations	2
+Jul	HD5	Delayed	81	P & S (Yarns)	1
+Jul	HD5	Delayed	81	IS	1
+Jul	HD5	Delayed	165	P & S (Yarns)	1
+Jul	HD5	Delayed	180	Customer	4
+Jul	HD5	Delayed	180	Operations	1
+Jul	HD5	Delayed	180	AR/ OSP	2
+Jul	HD5	Delayed	180	IS	1
+Jul	HD5	Delayed	186	Customer	5
+Jul	HD5	Delayed	186	Other (Customer)	2
+Jul	HD5	Delayed	186	AR/ OSP	3
+Jul	HD5	Delayed	186	IS	1
+Jul	HD5	Delayed	186		1
+Jul	HD5	Delayed	213	Customer	16
+Jul	HD5	Delayed	213	Other (Customer)	4
+Jul	HD5	Delayed	213	Operations	3
+Jul	HD5	Delayed	213	IS	1
+Jul	HD5	Delayed	242	Customer	2
+Jul	HD5	Delayed	242	Other (Customer)	1
+Jul	HD5	Delayed	242	Operations	1
+Jul	HD5	Delayed	242	P & S (Yarns)	3
+Jul	HD5	Delayed	242	PD	2
+Jul	HD5	Delayed	278	Customer	3
+Jul	HD5	Delayed Total			66
+Jul	HD5	On Time			275
+Jul	HD6	Delayed	81	Customer	3
+Jul	HD6	Delayed Total			3
+Jul	HD6	On Time			58
+Aug	HD5	Delayed	75	P & S (Yarns)	2
+Aug	HD5	Delayed	186	Other (Customer)	1
+Aug	HD5	Delayed	213	Customer	19
+Aug	HD5	Delayed	242	Customer	1
+Aug	HD5	Delayed	242	P & S (Yarns)	1
+Aug	HD5	Delayed Total			24
+Aug	HD5	On Time			217
+Aug	HD6	On Time			61
+Sept	HD5	Delayed	180	Customer	1
+Sept	HD5	Delayed	213	Customer	21
+Sept	HD5	Delayed	242	Customer	7
+Sept	HD5	Delayed	242		3
+Sept	HD5	Delayed Total			32
+Sept	HD5	On Time			309
+Sept	HD6	On Time			49
+Oct	HD5	Delayed	81	Customer	1
+Oct	HD5	Delayed	180	Other (Internal)	1
+Oct	HD5	Delayed	206	IS	1
+Oct	HD5	Delayed	213	Customer	10
+Oct	HD5	Delayed	213	Operations	1
+Oct	HD5	Delayed	213	PD	1
+Oct	HD5	Delayed	242	Operations	5
+Oct	HD5	Delayed	242		4
+Oct	HD5	Delayed Total			24
+Oct	HD5	On Time			269
+Oct	HD6	Delayed	200	PD	1
+Oct	HD6	Delayed Total			1
+Oct	HD6	On Time			29
+Nov	HD5	Delayed	141	Customer	2
+Nov	HD5	Delayed	141	Operations	1
+Nov	HD5	Delayed	180	Customer	2
+Nov	HD5	Delayed	180	Supply Planning	1
+Nov	HD5	Delayed	180		1
+Nov	HD5	Delayed	186	Customer	2
+Nov	HD5	Delayed	213	Customer	2
+Nov	HD5	Delayed	213	P & S (Yarns)	1
+Nov	HD5	Delayed Total			12
+Nov	HD5	On Time			248
+Nov	HD6	Delayed	141	Customer	1
+Nov	HD6	Delayed	141	Operations	1
+Nov	HD6	Delayed Total			2
+Nov	HD6	On Time			144
+Dec	HD5	Delayed	81	P & S (Yarns)	1
+Dec	HD5	Delayed	177	Operations	1
+Dec	HD5	Delayed	213	Operations	2
+Dec	HD5	Delayed	213	P & S (Yarns)	7
+Dec	HD5	Delayed	213	Logistics (I&E)	2
+Dec	HD5	Delayed	242	Customer	1
+Dec	HD5	Delayed	242	Operations	2
+Dec	HD5	Delayed Total			16
+Dec	HD5	On Time			361
+Dec	HD6	Delayed	81	Operations	1
+Dec	HD6	Delayed	81	P & S (Yarns)	2
+Dec	HD6	Delayed	141	Customer	8
+Dec	HD6	Delayed	200	Customer	22
+Dec	HD6	Delayed	200	Operations	5
+Dec	HD6	Delayed Total			38
+Dec	HD6	On Time			127

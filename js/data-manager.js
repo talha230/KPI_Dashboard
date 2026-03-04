@@ -10,14 +10,19 @@ const DataManager = {
     // Load main data from file
     loadMainData: async function() {
         try {
+            console.log('Fetching main data from:', CONFIG.dataFiles.main);
             const response = await fetch(CONFIG.dataFiles.main);
-            if (!response.ok) throw new Error('File not found');
+            if (!response.ok) {
+                console.log('Main data file not found - status:', response.status);
+                return false;
+            }
             const rawData = await response.text();
+            console.log('Main data loaded, length:', rawData.length);
             this.parseMainData(rawData);
-            console.log('✅ Main data loaded from file');
+            return true;
         } catch (error) {
-            console.log('Main data file not found');
-            throw error;
+            console.log('Error loading main data:', error);
+            return false;
         }
     },
     
@@ -26,21 +31,28 @@ const DataManager = {
         const factors = getAllFactors();
         if (!factors || factors.length === 0) return;
         
+        const results = [];
         for (const kpi of factors) {
             try {
                 const config = getFactorConfig(kpi);
                 if (!config) continue;
                 
+                console.log(`Fetching ${kpi} data from:`, config.dataFile);
                 const response = await fetch(config.dataFile);
-                if (!response.ok) continue;
+                if (!response.ok) {
+                    console.log(`${kpi} factor file not found`);
+                    continue;
+                }
                 
                 const rawData = await response.text();
                 this.factorData[kpi] = config.parseData(rawData);
                 console.log(`✅ Loaded ${kpi} factor data from file`);
+                results.push(kpi);
             } catch (error) {
-                console.log(`${kpi} factor file not found`);
+                console.log(`${kpi} factor file not found:`, error);
             }
         }
+        return results;
     },
     
     // Parse main KPI data
@@ -110,22 +122,10 @@ const DataManager = {
         };
     },
     
-    // Get filtered factor data by month using factor config
-    getFactorDataByMonth: function(kpi, plant, month) {
-        const config = getFactorConfig(kpi);
-        if (!config || !this.factorData[kpi]) return [];
-        
-        return config.getData(this.factorData[kpi], plant, month);
-    },
-    
     // Get available months for factor filter
     getFactorMonths: function(kpi) {
         const data = this.factorData[kpi];
-        if (!data || !data.months) return ['All'];
-        return ['All', ...data.months];
-    },
-    
-    // Getter methods
-    getMonthlyData: function() { return this.monthlyData; },
-    getYTDData: function() { return this.ytdData; }
+        if (!data || !data.months) return ['YTD'];
+        return data.months;
+    }
 };

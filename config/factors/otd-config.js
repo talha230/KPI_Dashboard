@@ -3,7 +3,7 @@ const OTDConfig = {
     kpi: 'OTD',
     title: 'OTD Delay Analysis',
     description: 'Hierarchical view of On-Time vs Delayed orders',
-    chartType: 'hierarchical',  // Special type for drill-down
+    chartType: 'hierarchical',
     colors: {
         onTime: '#4caf50',
         delayed: '#f44336',
@@ -13,137 +13,121 @@ const OTDConfig = {
     
     // Parse the detailed OTD data
     parseData: function(rawData) {
-        console.log('Parsing hierarchical OTD data...');
+        console.log('Parsing OTD data...');
         const rows = rawData.split('\n').filter(row => row.trim());
         
         // Skip header row
         const dataRows = rows.slice(1);
         
         const months = new Set();
-        const totals = {}; // { month: { totalOrders, onTime, delayed } }
-        const delaysByResponsibility = {}; // { month: { responsibility: count } }
-        const delaysByCustomer = {}; // { month: { custId: { total, byResponsibility } } }
+        const rawDataArray = [];
         
         dataRows.forEach(row => {
             const cols = row.split('\t').map(c => c.trim());
             if (cols.length < 6) return;
             
             const month = cols[0];
-            const status = cols[1];
-            const custId = cols[2];
-            const responsibility = cols[3];
-            const hd5 = parseInt(cols[4]) || 0;
-            const hd6 = parseInt(cols[5]) || 0;
+            const division = cols[1]; // HD5 or HD6
+            const status = cols[2];
+            const custId = cols[3];
+            const responsibility = cols[4];
+            const orders = parseInt(cols[5]) || 0;
+            
+            // Skip summary rows
+            if (status.includes('Total')) return;
+            if (!month || !division || !status || orders === 0) return;
+            
+            // Convert division to plant name
+            const plant = division === 'HD5' ? 'Plant-05' : 'Plant-06';
             
             months.add(month);
             
-            // Initialize month data
-            if (!totals[month]) {
-                totals[month] = { totalOrders: 0, onTime: 0, delayed: 0 };
-                delaysByResponsibility[month] = {};
-                delaysByCustomer[month] = {};
-            }
-            
-            // Add to totals (both plants combined for percentage calculation)
-            const totalForRow = hd5 + hd6;
-            totals[month].totalOrders += totalForRow;
-            
-            if (status === 'On Time') {
-                totals[month].onTime += totalForRow;
-            } else if (status === 'Delayed') {
-                totals[month].delayed += totalForRow;
-                
-                // Track by responsibility
-                if (!delaysByResponsibility[month][responsibility]) {
-                    delaysByResponsibility[month][responsibility] = 0;
-                }
-                delaysByResponsibility[month][responsibility] += totalForRow;
-                
-                // Track by customer
-                if (custId) {
-                    if (!delaysByCustomer[month][custId]) {
-                        delaysByCustomer[month][custId] = {
-                            total: 0,
-                            byResponsibility: {}
-                        };
-                    }
-                    delaysByCustomer[month][custId].total += totalForRow;
-                    
-                    if (!delaysByCustomer[month][custId].byResponsibility[responsibility]) {
-                        delaysByCustomer[month][custId].byResponsibility[responsibility] = 0;
-                    }
-                    delaysByCustomer[month][custId].byResponsibility[responsibility] += totalForRow;
-                }
-            }
+            rawDataArray.push({
+                month: month,
+                plant: plant,
+                status: status,
+                custId: custId,
+                responsibility: responsibility || 'Unassigned',
+                orders: orders
+            });
         });
         
-        // Calculate percentages
-        const result = {};
-        Array.from(months).forEach(month => {
-            const total = totals[month].totalOrders;
-            const onTime = totals[month].onTime;
-            const delayed = totals[month].delayed;
-            
-            // On-Time vs Delayed percentages
-            result[month] = {
-                total: total,
-                onTime: {
-                    count: onTime,
-                    percentage: (onTime / total * 100).toFixed(1)
-                },
-                delayed: {
-                    count: delayed,
-                    percentage: (delayed / total * 100).toFixed(1),
-                    byResponsibility: {},
-                    byCustomer: {}
-                }
+        // Sort months (YTD last if exists)
+        const sortedMonths = Array.from(months).sort((a,b) => {
+            if (a === 'YTD') return 1;
+            if (b === 'YTD') return -1;
+            const monthOrder = {
+                'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+                'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
             };
-            
-            // Calculate responsibility percentages (of total orders)
-            Object.entries(delaysByResponsibility[month] || {}).forEach(([resp, count]) => {
-                result[month].delayed.byResponsibility[resp] = {
-                    count: count,
-                    percentage: (count / total * 100).toFixed(1)
-                };
-            });
-            
-            // Calculate customer percentages (of total orders)
-            Object.entries(delaysByCustomer[month] || {}).forEach(([custId, data]) => {
-                result[month].delayed.byCustomer[custId] = {
-                    count: data.total,
-                    percentage: (data.total / total * 100).toFixed(1),
-                    byResponsibility: {}
-                };
-                
-                // Calculate responsibility percentages within this customer
-                Object.entries(data.byResponsibility).forEach(([resp, count]) => {
-                    result[month].delayed.byCustomer[custId].byResponsibility[resp] = {
-                        count: count,
-                        percentage: (count / data.total * 100).toFixed(1)
-                    };
-                });
-            });
+            return (monthOrder[a] || 99) - (monthOrder[b] || 99);
         });
-        
-        // Sort months
-        const sortedMonths = Array.from(months).sort(
-            (a,b) => CONFIG.monthOrder[a] - CONFIG.monthOrder[b]
-        );
         
         return {
             months: sortedMonths,
-            data: result
+            rawData: rawDataArray
         };
     },
     
     // Get data for specific month
     getData: function(data, month) {
-        return data.data[month] || null;
+        if (month === 'YTD') {
+            return data.rawData; // Return all data for YTD calculation
+        }
+        return data.rawData.filter(d => d.month === month);
     },
     
-    // Get available months
-    getMonths: function(data) {
-        return data.months;
+    // Calculate YTD totals
+    calculateYTD: function(rawData) {
+        const totalOrders = rawData.reduce((sum, d) => sum + d.orders, 0);
+        const delayedOrders = rawData.filter(d => d.status === 'Delayed')
+            .reduce((sum, d) => sum + d.orders, 0);
+        const onTimeOrders = rawData.filter(d => d.status === 'On Time')
+            .reduce((sum, d) => sum + d.orders, 0);
+        
+        return {
+            total: totalOrders,
+            delayed: delayedOrders,
+            onTime: onTimeOrders,
+            delayedPercent: totalOrders > 0 ? (delayedOrders / totalOrders * 100).toFixed(1) : 0,
+            onTimePercent: totalOrders > 0 ? (onTimeOrders / totalOrders * 100).toFixed(1) : 0
+        };
+    },
+    
+    // Get responsibility breakdown
+    getResponsibilityData: function(rawData, totalOrders) {
+        const respData = {};
+        rawData.filter(d => d.status === 'Delayed' && d.responsibility)
+            .forEach(d => {
+                if (!respData[d.responsibility]) {
+                    respData[d.responsibility] = 0;
+                }
+                respData[d.responsibility] += d.orders;
+            });
+        
+        return Object.entries(respData).map(([resp, count]) => ({
+            responsibility: resp,
+            count: count,
+            percent: (count / totalOrders * 100).toFixed(1)
+        })).sort((a, b) => b.count - a.count);
+    },
+    
+    // Get customer breakdown
+    getCustomerData: function(rawData, responsibility, totalOrders) {
+        const custData = {};
+        rawData.filter(d => d.status === 'Delayed' && d.responsibility === responsibility && d.custId)
+            .forEach(d => {
+                if (!custData[d.custId]) {
+                    custData[d.custId] = 0;
+                }
+                custData[d.custId] += d.orders;
+            });
+        
+        return Object.entries(custData).map(([custId, count]) => ({
+            customer: custId,
+            count: count,
+            percent: (count / totalOrders * 100).toFixed(1)
+        })).sort((a, b) => b.count - a.count);
     }
 };
 
